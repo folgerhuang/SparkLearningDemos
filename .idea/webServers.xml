@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="69c2469b-f6ac-443b-bbc3-9ae73dd699d1" name="learnhadoopnode" url="http://learnhadoopnode">
+        <fileTransfer host="learnhadoopnode" port="22" rootFolder="/opt/spark161_26/python" accessType="SFTP" password="dff9dfd3df9bdf93df92df9edf9adf93df9bdf9f" username="shiyu">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
