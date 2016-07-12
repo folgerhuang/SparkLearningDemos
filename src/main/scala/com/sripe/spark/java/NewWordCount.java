@@ -10,16 +10,19 @@ import org.apache.spark.streaming.api.java.JavaPairDStream;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import scala.Tuple2;
-import scala.actors.threadpool.Arrays;
+
+import java.util.Arrays;
 
 /**
  * Created by shiyu on 6/25/2016.
+ * nc -lp 9999
+ * netstat -an|grep 9999 （查看端口是否正常打开）
  */
 public class NewWordCount {
     public static void main(String[] args) {
         SparkConf conf = new SparkConf().setAppName("Word count with spark streaming").setMaster("spark://learnhadoopnode:7077")
                 .setJars(new String[]{"G:\\AndroidStudioProjects\\SparkLearningDemos\\com.sripe.spark.jar"});
-        JavaStreamingContext jsc = new JavaStreamingContext(conf, Seconds.apply(2));
+        JavaStreamingContext jsc = new JavaStreamingContext(conf, Seconds.apply(5));
         JavaReceiverInputDStream<String> lines = jsc.socketTextStream("learnhadoopnode", 9999);
         JavaDStream<String> words = lines.flatMap(new FlatMapFunction<String, String>() {
             public Iterable<String> call(String s) throws Exception {
@@ -31,11 +34,18 @@ public class NewWordCount {
                 return new Tuple2<String, Integer>(s, 1);
             }
         });
+        JavaPairDStream<String, Integer> counts = wordPaire.reduceByKeyAndWindow(new Function2<Integer, Integer, Integer>() {
+            public Integer call(Integer v1, Integer v2) throws Exception {
+                return v1 + v2;
+            }
+        },Seconds.apply(60),Seconds.apply(5));
+/*
         JavaPairDStream<String, Integer> counts = wordPaire.reduceByKey(new Function2<Integer, Integer, Integer>() {
             public Integer call(Integer v1, Integer v2) throws Exception {
                 return v1 + v2;
             }
         });
+*/
 
         counts.print();
         jsc.start();//start the computation

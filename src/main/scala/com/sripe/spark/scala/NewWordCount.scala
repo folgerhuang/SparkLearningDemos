@@ -13,7 +13,7 @@ object NewWordCount {
     val conf = new SparkConf().setAppName("New Word Count")
       .setMaster("spark://learnhadoopnode:7077")
       .setJars(Seq("G:\\AndroidStudioProjects\\SparkLearningDemos\\com.sripe.spark.jar"))
-    val ssc = new StreamingContext(conf,Seconds(2))
+    val ssc = new StreamingContext(conf,Seconds(5))
     val lines = ssc.socketTextStream("learnhadoopnode",9999)
     val words = lines.flatMap(_.split(" "))
     val pairs = words.map(word => (word,1))

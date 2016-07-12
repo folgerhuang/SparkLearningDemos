@@ -22,7 +22,5 @@ public class MoniteHDFSDirectory {
         ssc.start();//start the computation
         ssc.awaitTermination();//wait the computation to terminate.
 
-
-
     }
 }
